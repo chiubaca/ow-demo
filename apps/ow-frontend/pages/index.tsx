@@ -8,10 +8,7 @@ import { Map, Marker, Popup } from 'react-map-gl/maplibre';
 import { TitleInfo, titlesInfoSchema } from '../typeValidation';
 import Typography from '@mui/material/Typography';
 
-import type {
-  MapRef,
-  Map as IMapBox,
-} from 'react-map-gl/dist/esm/exports-maplibre';
+import type { MapRef } from 'react-map-gl/dist/esm/exports-maplibre';
 
 export const getStaticProps: GetStaticProps<{
   titles: TitleInfo[];
