@@ -21,7 +21,7 @@ yarn nx run ow-frontend:serve
 yarn nx run ow-frontend:test 
 ```
 
-[live demo](ow-demo.vercel.app)
+[live demo](https://ow-demo.vercel.app)
 
 
 ## Run the storybook locally
@@ -30,5 +30,5 @@ yarn nx run ow-frontend:test
 yarn nx run ow-ui:storybook 
 ```
 
-[live storybook](ow-demo-storybook.vercel.app
+[live storybook](https://ow-demo-storybook.vercel.app
 ) 
