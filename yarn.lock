@@ -1844,6 +1844,13 @@
   dependencies:
     "@nx/react" "16.6.0"
 
+"@nrwl/storybook@16.6.0":
+  version "16.6.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/storybook/-/storybook-16.6.0.tgz#66086d1933545438465cc970a2c065991ac12f46"
+  integrity sha512-8wKz2t99wr+EASyFNZV3CiOeSKJPk+OMrOU1q8qeHt6kEKoMrHmQmT4fxEOXA4ud6JxKUNJ/Wkxy90ytOeGyXw==
+  dependencies:
+    "@nx/storybook" "16.6.0"
+
 "@nrwl/tao@16.6.0":
   version "16.6.0"
   resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-16.6.0.tgz#7920111d53b02cbb41b71deaf887745c1b0df61d"
@@ -2062,6 +2069,22 @@
     chalk "^4.1.0"
     file-loader "^6.2.0"
     minimatch "3.0.5"
+    tslib "^2.3.0"
+
+"@nx/storybook@16.6.0", "@nx/storybook@^16.6.0":
+  version "16.6.0"
+  resolved "https://registry.yarnpkg.com/@nx/storybook/-/storybook-16.6.0.tgz#2c008b0c7a43dd59be1142830f43a99c4cc4edb2"
+  integrity sha512-IF/oD2QgKs1G8anDI7vUEiP785jXgbFWDZtsfdtlgP0O5I48E0naAiGZHyS8vKwe4+W2Fb8wnveQ0qXlA+s1AA==
+  dependencies:
+    "@nrwl/storybook" "16.6.0"
+    "@nx/cypress" "16.6.0"
+    "@nx/devkit" "16.6.0"
+    "@nx/js" "16.6.0"
+    "@nx/linter" "16.6.0"
+    "@nx/workspace" "16.6.0"
+    "@phenomnomnominal/tsquery" "~5.0.1"
+    dotenv "~10.0.0"
+    semver "7.5.3"
     tslib "^2.3.0"
 
 "@nx/web@16.6.0":
@@ -5757,7 +5780,7 @@ jest-environment-jsdom@29.4.3:
     jest-util "^29.4.3"
     jsdom "^20.0.0"
 
-jest-environment-node@^29.6.2:
+jest-environment-node@^29.4.1, jest-environment-node@^29.6.2:
   version "29.6.2"
   resolved "https://registry.yarnpkg.com/jest-environment-node/-/jest-environment-node-29.6.2.tgz#a9ea2cabff39b08eca14ccb32c8ceb924c8bb1ad"
   integrity sha512-YGdFeZ3T9a+/612c5mTQIllvWkddPbYcN2v95ZH24oWMbGA4GGS2XdIF92QMhUhvrjjuQWYgUGW2zawOyH63MQ==
