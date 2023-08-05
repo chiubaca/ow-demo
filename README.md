@@ -1,4 +1,4 @@
-# OwDemo
+# OW Demo by Alex Chiu
 
 This codebase was bootstrapped using [Nx](https://nx.dev) 🔥
 
