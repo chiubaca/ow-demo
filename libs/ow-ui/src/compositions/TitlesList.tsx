@@ -10,6 +10,7 @@ export type TitleDetails = {
   titleNumber: string;
   propertyAddress: string;
   tenure: Tenure;
+  onClick?: () => void;
 };
 
 type TitlesListProps = {
@@ -21,7 +22,7 @@ export function TitlesList({ titles }: TitlesListProps) {
     <List>
       {titles.map((title, index) => (
         <ListItem key={index} disablePadding>
-          <ListItemButton>
+          <ListItemButton onClick={title.onClick}>
             <ListItemText
               primary={title.titleNumber.toUpperCase()}
               secondary={title.propertyAddress}
