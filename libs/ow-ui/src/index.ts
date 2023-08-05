@@ -1,1 +1,1 @@
-export * from './lib/ow-ui';
+export * from './components/TitleTypeBadge';
