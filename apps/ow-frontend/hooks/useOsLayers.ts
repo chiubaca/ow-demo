@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import type { GeoJSON } from 'geojson';
 
-type UseOsLayerProps = {
+export type UseOsLayerParams = {
   ngsFeatureId: NGSFeatureIds;
   mapState: MapState | null;
   minZoomLevelToShow: number;
@@ -14,7 +14,7 @@ export const useOsLayers = ({
   mapState,
   minZoomLevelToShow,
   getNgsDataFn,
-}: UseOsLayerProps) => {
+}: UseOsLayerParams) => {
   const [features, setFeatures] = useState<GeoJSON | null>();
 
   useEffect(() => {
@@ -27,7 +27,6 @@ export const useOsLayers = ({
       };
       getFeatures()
         .then((features) => {
-          console.log('got features', features);
           setFeatures(features);
         })
         .catch((error) => {
