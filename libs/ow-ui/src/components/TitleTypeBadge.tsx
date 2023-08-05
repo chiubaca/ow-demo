@@ -1,8 +1,9 @@
 import * as React from 'react';
 import Chip from '@mui/material/Chip';
+import { Tenure } from '../common';
 
 type TitleTypeBadgeProps = {
-  type: 'leasehold' | 'freehold';
+  type: Tenure;
 };
 
 const typeColorMapper = {

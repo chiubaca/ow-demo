@@ -4,11 +4,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import { TitleTypeBadge } from '../components/TitleTypeBadge';
 import ListItemText from '@mui/material/ListItemText';
+import { Tenure } from '../common';
 
 export type TitleDetails = {
   titleNumber: string;
   propertyAddress: string;
-  tenure: 'leasehold' | 'freehold';
+  tenure: Tenure;
 };
 
 type TitlesListProps = {
