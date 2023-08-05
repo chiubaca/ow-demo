@@ -4,7 +4,7 @@ import { TitleDetails, TitlesList as TitlesListComponent } from './TitlesList';
 
 const Story: Meta<typeof TitlesListComponent> = {
   component: TitlesListComponent,
-  title: 'components/Titles List',
+  title: 'compositions/Titles List',
   parameters: {
     // layout: 'centered',
   },
@@ -44,7 +44,7 @@ const titles: TitleDetails[] = [
   },
 ];
 
-export const TitleTypeBadge = Template.bind({});
-TitleTypeBadge.args = {
+export const TitlesList = Template.bind({});
+TitlesList.args = {
   titles,
 };

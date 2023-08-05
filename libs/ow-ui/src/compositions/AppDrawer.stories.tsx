@@ -5,7 +5,7 @@ import { Typography } from '@mui/material';
 
 const Story: Meta<typeof AppDrawerComponent> = {
   component: AppDrawerComponent,
-  title: 'components/Title Type Badge',
+  title: 'compositions/App Drawer',
   parameters: {
     layout: 'centered',
   },
