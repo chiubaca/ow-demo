@@ -15,9 +15,21 @@ export const useOsLayers = ({
   minZoomLevelToShow,
   getNgsDataFn,
 }: UseOsLayerParams) => {
+  const [isLayerVisible, setIsLayerVisible] = useState<boolean>(false);
+
+  const [isLayerOn, setIsLayerOn] = useState<boolean>(true);
+
   const [features, setFeatures] = useState<GeoJSON | null>();
 
+  const toggleLayer = () => setIsLayerOn(!isLayerOn);
+
   useEffect(() => {
+    if (!isLayerOn) {
+      setIsLayerOn(false);
+      setFeatures(null);
+      return;
+    }
+
     // Only fetch data on given minZoomLevel to save on API allowance
     if (mapState?.zoomLevel >= minZoomLevelToShow) {
       const getFeatures = async () => {
@@ -28,6 +40,7 @@ export const useOsLayers = ({
       getFeatures()
         .then((features) => {
           setFeatures(features);
+          setIsLayerVisible(true);
         })
         .catch((error) => {
           console.log();
@@ -37,9 +50,14 @@ export const useOsLayers = ({
 
       return;
     }
-
+    setIsLayerVisible(false);
     setFeatures(null);
-  }, [mapState]);
+  }, [getNgsDataFn, isLayerOn, mapState, minZoomLevelToShow, ngsFeatureId]);
 
-  return { features };
+  return {
+    features,
+    isLayerOn,
+    isLayerVisible,
+    toggleLayer,
+  };
 };

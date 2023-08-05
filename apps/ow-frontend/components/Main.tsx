@@ -10,6 +10,20 @@ import { useOsLayers } from '../hooks';
 import { TitleInfo } from '../typeValidation';
 
 import type { FillLayer, MapRef } from 'react-map-gl/dist/esm/exports-maplibre';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import {
+  ExpandLess,
+  ExpandMore,
+  Visibility,
+  VisibilityOff,
+} from '@mui/icons-material';
+import {
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Collapse,
+} from '@mui/material';
 
 type MainProps = {
   titles: TitleInfo[];
@@ -36,7 +50,7 @@ const buildingLayerStyle: FillLayer = {
   source: 'geojson',
   type: 'fill',
   paint: {
-    'fill-color': '#949d788a',
+    'fill-color': '#ef920688',
     'fill-outline-color': '#09151586',
   },
 };
@@ -46,8 +60,9 @@ const namedAreaLayerStyle: FillLayer = {
   source: 'geojson',
   type: 'fill',
   paint: {
-    'fill-color': '#556edc0',
-    'fill-outline-color': '#091515',
+    'fill-color': '#828282a7',
+    'fill-outline-color': '#c71d1d',
+    'fill-opacity': 0.25,
   },
 };
 
@@ -58,14 +73,24 @@ export default function Main({ titles }: MainProps) {
 
   const [mapState, setMapState] = useState<MapState | null>();
 
-  const { features: buildings } = useOsLayers({
+  const {
+    features: buildings,
+    isLayerVisible: isBuildingLayerVisible,
+    isLayerOn: isBuildingLayerOn,
+    toggleLayer: toggleBuildingVisibility,
+  } = useOsLayers({
     ngsFeatureId: 'bld-fts-buildingpart-1',
     mapState,
     minZoomLevelToShow: 17,
     getNgsDataFn: getNgsData,
   });
 
-  const { features: namedArea } = useOsLayers({
+  const {
+    features: namedArea,
+    isLayerVisible: isNamedAreaLayerVisible,
+    isLayerOn: isNamedAreaLayerOn,
+    toggleLayer: toggleNamedAreaVisibility,
+  } = useOsLayers({
     ngsFeatureId: 'gnm-fts-namedarea-1',
     mapState,
     minZoomLevelToShow: 12,
@@ -101,7 +126,7 @@ export default function Main({ titles }: MainProps) {
           latitude: 51.5,
           zoom: 10,
         }}
-        style={{ width: '100%', height: '90vh' }}
+        style={{ width: '100%', height: '93vh' }}
         mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${process.env.NEXT_PUBLIC_MAP_TILER_KEY}`}
         onMoveEnd={(e) => {
           console.log();
@@ -114,6 +139,23 @@ export default function Main({ titles }: MainProps) {
           });
         }}
       >
+        <LayerOverLay
+          layers={[
+            {
+              layerName: 'Buildings',
+              isVisible: isBuildingLayerVisible,
+              isLayerOn: isBuildingLayerOn,
+              onClick: toggleBuildingVisibility,
+            },
+            {
+              layerName: 'OS Areas',
+              isVisible: isNamedAreaLayerVisible,
+              isLayerOn: isNamedAreaLayerOn,
+              onClick: toggleNamedAreaVisibility,
+            },
+          ]}
+        />
+
         {namedArea && (
           <Source id="namedArea" type="geojson" data={namedArea}>
             <Layer {...namedAreaLayerStyle} />
@@ -156,3 +198,61 @@ export default function Main({ titles }: MainProps) {
     </AppDrawer>
   );
 }
+
+type LayerOverlayProps = {
+  layers: {
+    isVisible: boolean;
+    isLayerOn: boolean;
+    layerName: string;
+    onClick: () => void;
+  }[];
+};
+
+const LayerOverLay = ({ layers }: LayerOverlayProps) => {
+  const [open, setOpen] = React.useState(true);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
+  return (
+    <List
+      sx={{
+        position: 'absolute',
+        top: '0',
+        right: '0',
+        width: '100%',
+        maxWidth: 360,
+        bgcolor: 'background.paper',
+      }}
+      component="nav"
+      aria-labelledby="nested-list-subheader"
+    >
+      <ListItemButton onClick={handleClick}>
+        <ListItemIcon>
+          <InboxIcon />
+        </ListItemIcon>
+        <ListItemText primary="All layers" />
+        {open ? <ExpandLess /> : <ExpandMore />}
+      </ListItemButton>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          {layers.map((l, index) => {
+            return (
+              <ListItemButton
+                onClick={l.onClick}
+                disabled={!l.isVisible}
+                sx={{ pl: 4 }}
+                key={index}
+              >
+                <ListItemIcon>
+                  {l.isLayerOn ? <Visibility /> : <VisibilityOff />}
+                </ListItemIcon>
+                <ListItemText primary={l.layerName} />
+              </ListItemButton>
+            );
+          })}
+        </List>
+      </Collapse>
+    </List>
+  );
+};
