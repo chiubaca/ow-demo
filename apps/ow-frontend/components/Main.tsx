@@ -99,7 +99,7 @@ export default function Main({ titles }: MainProps) {
 
   return (
     <AppDrawer
-      title="Property portfolio"
+      title="Your property portfolio 🏠"
       drawerContent={
         <TitlesList
           titles={titles.map((t) => ({
@@ -174,9 +174,7 @@ export default function Main({ titles }: MainProps) {
               longitude={selectedTitle.X}
               latitude={selectedTitle.Y}
               anchor="bottom"
-            >
-              {/* <img src="./pin.png" /> */}
-            </Marker>
+            />
 
             <Popup
               anchor="top"
