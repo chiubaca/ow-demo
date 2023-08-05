@@ -1,19 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-
+import React, { useState, useRef } from 'react';
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
-
+import { ngd } from 'osdatahub';
 import { Layer, Map, Marker, Popup, Source } from 'react-map-gl/maplibre';
-
-import { TitleInfo, titlesInfoSchema } from '../typeValidation';
 import Typography from '@mui/material/Typography';
+
+import { useOsLayers } from '../hooks';
+import { TitleInfo, titlesInfoSchema } from '../typeValidation';
 
 import type { FillLayer, MapRef } from 'react-map-gl/dist/esm/exports-maplibre';
 
-import { useOsLayers } from '../hooks';
-
-import { ngd } from 'osdatahub';
-
-export const getNgsData = async (featureId: NGSFeatureIds, bbox: Bbox) => {
+const getNgsData = async (featureId: NGSFeatureIds, bbox: Bbox) => {
   try {
     const features = await ngd.features(
       process.env.NEXT_PUBLIC_OS_API_KEY,
@@ -45,12 +41,29 @@ export default function Page({
     getNgsDataFn: getNgsData,
   });
 
-  const layerStyle: FillLayer = {
+  const { features: namedArea } = useOsLayers({
+    ngsFeatureId: 'gnm-fts-namedarea-1',
+    mapState,
+    minZoomLevelToShow: 12,
+    getNgsDataFn: getNgsData,
+  });
+
+  const buildingLayerStyle: FillLayer = {
     id: 'buildings',
     source: 'geojson',
     type: 'fill',
     paint: {
-      'fill-color': '#00ffff',
+      'fill-color': '#949d788a',
+      'fill-outline-color': '#09151586',
+    },
+  };
+
+  const namedAreaLayerStyle: FillLayer = {
+    id: 'namedArea',
+    source: 'geojson',
+    type: 'fill',
+    paint: {
+      'fill-color': '#556edc0',
       'fill-outline-color': '#091515',
     },
   };
@@ -78,9 +91,15 @@ export default function Page({
           });
         }}
       >
+        {namedArea && (
+          <Source id="namedArea" type="geojson" data={namedArea}>
+            <Layer {...namedAreaLayerStyle} />
+          </Source>
+        )}
+
         {buildings && (
           <Source id="buildings" type="geojson" data={buildings}>
-            <Layer {...layerStyle} />
+            <Layer {...buildingLayerStyle} />
           </Source>
         )}
 
@@ -120,7 +139,6 @@ export default function Page({
               mapRef.current.flyTo({
                 zoom: 17,
                 center: [title.X, title.Y],
-                pitch: 45,
               });
             }}
             key={idx}
