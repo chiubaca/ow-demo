@@ -41,7 +41,7 @@ const getNgsData = async (featureId: NGSFeatureIds, bbox: Bbox) => {
     );
     return features;
   } catch (error) {
-    console.error('Error getting data from OS API', error);
+    console.warn('Error getting data from OS API', error);
   }
 };
 
@@ -126,7 +126,7 @@ export default function Main({ titles }: MainProps) {
           latitude: 51.5,
           zoom: 10,
         }}
-        style={{ width: '100%', height: '93vh' }}
+        style={{ width: '100%', height: '94vh' }}
         mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${process.env.NEXT_PUBLIC_MAP_TILER_KEY}`}
         onMoveEnd={(e) => {
           console.log();

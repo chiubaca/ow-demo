@@ -43,8 +43,7 @@ export const useOsLayers = ({
           setIsLayerVisible(true);
         })
         .catch((error) => {
-          console.log();
-          console.error('Error setting features', error);
+          console.warn('Error setting features', error);
           setFeatures(null);
         });
 
