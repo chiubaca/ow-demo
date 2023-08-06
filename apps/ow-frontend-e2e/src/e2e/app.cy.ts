@@ -1,13 +1,11 @@
-import { getGreeting } from '../support/app.po';
-
 describe('ow-frontend', () => {
   beforeEach(() => cy.visit('/'));
 
-  it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    cy.login('my-email@something.com', 'myPassword');
+  it('should load the application', () => {
+    cy.get('[data-cypress=main-app]').should('be.visible');
+  });
 
-    // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome ow-frontend');
+  it('should be able to select a title from the side bar', () => {
+    cy.get('body').should('be.visible').tab().tab().click();
   });
 });

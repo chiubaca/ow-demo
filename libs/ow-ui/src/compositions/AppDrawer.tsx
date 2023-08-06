@@ -96,7 +96,7 @@ export function AppDrawer({ children, drawerContent, title }: AppDrawerProps) {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex' }} data-cypress="main-app">
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
@@ -125,6 +125,7 @@ export function AppDrawer({ children, drawerContent, title }: AppDrawerProps) {
         variant="persistent"
         anchor="left"
         open={open}
+        data-cypress="app-drawer"
       >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
