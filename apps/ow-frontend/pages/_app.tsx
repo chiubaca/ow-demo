@@ -12,7 +12,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Welcome to ow-frontend!</title>
+        <title>🏠 Your OW property portfolio </title>
       </Head>
       <main className="app">
         <Component {...pageProps} />
