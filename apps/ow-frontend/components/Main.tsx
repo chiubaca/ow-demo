@@ -126,11 +126,14 @@ export default function Main({ titles }: MainProps) {
             maxWidth: 360,
             bgcolor: 'background.paper',
             opacity: 0.8,
+            p: 1,
           }}
         >
           {hoverInfo &&
             hoverInfo.map((info, idx) => (
-              <Typography key={idx}>{info}</Typography>
+              <Typography variant="caption" key={idx} component="p">
+                {info}
+              </Typography>
             ))}
         </Box>
 
