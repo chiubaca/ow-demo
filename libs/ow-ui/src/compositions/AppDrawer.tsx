@@ -68,6 +68,21 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
+type MemoInnerContentProps = {
+  innerContent: React.ReactElement;
+};
+
+const MemoInnerContent = React.memo(
+  ({ innerContent }: MemoInnerContentProps) => {
+    return (
+      <>
+        <DrawerHeader />
+        {innerContent}
+      </>
+    );
+  }
+);
+
 export function AppDrawer({ children, drawerContent, title }: AppDrawerProps) {
   // const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -121,8 +136,7 @@ export function AppDrawer({ children, drawerContent, title }: AppDrawerProps) {
         {drawerContent}
       </Drawer>
       <Main open={open}>
-        <DrawerHeader />
-        {children}
+        <MemoInnerContent key={1} innerContent={children} />
       </Main>
     </Box>
   );
