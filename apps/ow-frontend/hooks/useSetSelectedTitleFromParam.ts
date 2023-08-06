@@ -1,3 +1,7 @@
+/**
+ * Hook to set the selected title by a given valid title-id url param
+ */
+
 import { useEffect } from 'react';
 import { TitleInfo } from '../typeValidation';
 

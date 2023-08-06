@@ -1,3 +1,7 @@
+/**
+ * Hook to set the selected title to a URL history.
+ */
+
 import { useEffect } from 'react';
 import { TitleInfo } from '../typeValidation';
 
@@ -8,7 +12,6 @@ export const useSetHistory = (selectedTitle: TitleInfo) => {
     if (!selectedTitle) {
       return;
     }
-    console.log('set history state', window);
 
     urlSearchParams.set('title-id', selectedTitle['Title Number']);
 

@@ -1,3 +1,8 @@
+/**
+ * Hook to orchestrate  fetch layers and preparing it to be used as
+ * a webmap source layer.
+ */
+
 import { ngd } from 'osdatahub';
 
 import { useOsLayers } from './useOsLayers';

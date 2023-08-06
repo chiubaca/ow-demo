@@ -1,3 +1,7 @@
+/**
+ * hook to handle fetching geojson OS Data API at a given zoom level
+ */
+
 import { useEffect, useState } from 'react';
 
 import type { GeoJSON } from 'geojson';
