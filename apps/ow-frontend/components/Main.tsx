@@ -11,7 +11,11 @@ import {
   TitlesList,
 } from '@ow-demo/ow-ui';
 
-import { useRegisteredLayers } from '../hooks';
+import {
+  useRegisteredLayers,
+  useSetHistory,
+  useSetSelectedTitleFromParam,
+} from '../hooks';
 import { TitleInfo } from '../typeValidation';
 
 import type { MapRef } from 'react-map-gl/dist/esm/exports-maplibre';
@@ -32,6 +36,10 @@ export default function Main({ titles }: MainProps) {
   const [popupInfo, setPopupInfo] = useState(false);
 
   const [selectedTitle, setSelectedTitle] = useState<null | TitleInfo>(null);
+
+  useSetHistory(selectedTitle);
+
+  useSetSelectedTitleFromParam({ titles, setSelectedTitle });
 
   const layers = useRegisteredLayers(mapState);
 
@@ -70,6 +78,7 @@ export default function Main({ titles }: MainProps) {
       }
     >
       <Map
+        onLoad={(e) => console.log(e)}
         ref={mapRef}
         initialViewState={{
           longitude: -0.1,
