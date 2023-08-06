@@ -4,7 +4,12 @@ import Box from '@mui/material/Box';
 import { Layer, Map, Marker, Popup, Source } from 'react-map-gl/maplibre';
 
 import type { Tenure } from '@ow-demo/ow-ui';
-import { AppDrawer, LayersList, TitlesList } from '@ow-demo/ow-ui';
+import {
+  AppDrawer,
+  LayersList,
+  TitleTypeBadge,
+  TitlesList,
+} from '@ow-demo/ow-ui';
 
 import { useRegisteredLayers } from '../hooks';
 import { TitleInfo } from '../typeValidation';
@@ -20,13 +25,15 @@ type HoverInfo = (null | string)[];
 export default function Main({ titles }: MainProps) {
   const mapRef = useRef<MapRef>(null!);
 
-  const [selectedTitle, setSelectedTitle] = useState<null | TitleInfo>(null);
-
   const [mapState, setMapState] = useState<MapState | null>();
 
-  const layers = useRegisteredLayers(mapState);
-
   const [hoverInfo, setHoverInfo] = useState<null | HoverInfo>(null);
+
+  const [popupInfo, setPopupInfo] = useState(false);
+
+  const [selectedTitle, setSelectedTitle] = useState<null | TitleInfo>(null);
+
+  const layers = useRegisteredLayers(mapState);
 
   const onHover = useCallback((event) => {
     const { features } = event;
@@ -51,6 +58,7 @@ export default function Main({ titles }: MainProps) {
             propertyAddress: t['Property Address'],
             tenure: t.Tenure.toLowerCase() as Tenure,
             onClick: () => {
+              setPopupInfo(true);
               setSelectedTitle(t);
               mapRef.current.flyTo({
                 zoom: 19,
@@ -129,25 +137,34 @@ export default function Main({ titles }: MainProps) {
         {selectedTitle && (
           <>
             <Marker
+              style={{ cursor: 'pointer' }}
               longitude={selectedTitle.X}
               latitude={selectedTitle.Y}
               anchor="bottom"
+              onClick={(e) => {
+                e.originalEvent.stopPropagation();
+                setPopupInfo(true);
+              }}
             />
 
-            <Popup
-              anchor="top"
-              longitude={Number(selectedTitle.X)}
-              latitude={Number(selectedTitle.Y)}
-              // onClose={() => setPopupInfo(null)}
-            >
-              <Typography component={'p'}>
-                {selectedTitle['Title Number']}
-              </Typography>
-              <Typography component={'p'}>
-                {selectedTitle['Property Address']}
-              </Typography>
-              <Typography component={'p'}>{selectedTitle.Tenure}</Typography>
-            </Popup>
+            {popupInfo && (
+              <Popup
+                anchor="top"
+                longitude={Number(selectedTitle.X)}
+                latitude={Number(selectedTitle.Y)}
+                onClose={() => setPopupInfo(false)}
+              >
+                <Typography variant="subtitle1" gutterBottom>
+                  {selectedTitle['Title Number']}
+                </Typography>
+                <Typography variant="body2" gutterBottom sx={{ pb: 1 }}>
+                  {selectedTitle['Property Address']}
+                </Typography>
+                <TitleTypeBadge
+                  type={selectedTitle.Tenure.toLowerCase() as Tenure}
+                />
+              </Popup>
+            )}
           </>
         )}
       </Map>
