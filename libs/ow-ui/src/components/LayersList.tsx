@@ -29,18 +29,7 @@ export const LayersList = ({ layers }: LayerListProps) => {
     setOpen(!open);
   };
   return (
-    <List
-      // sx={{
-      //   position: 'absolute',
-      //   top: '0',
-      //   right: '0',
-      //   width: '100%',
-      //   maxWidth: 360,
-      //   bgcolor: 'background.paper',
-      // }}
-      component="nav"
-      aria-labelledby="nested-layer-list"
-    >
+    <List component="nav" aria-labelledby="nested-layer-list">
       <ListItemButton onClick={handleClick}>
         <ListItemIcon>
           <Layers />

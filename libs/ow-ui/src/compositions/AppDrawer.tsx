@@ -1,8 +1,11 @@
+/**
+ * Adapted from https://mui.com/material-ui/react-drawer/#persistent-drawer
+ */
+
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
