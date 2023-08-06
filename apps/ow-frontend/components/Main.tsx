@@ -1,29 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { ngd } from 'osdatahub';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Layer, Map, Marker, Popup, Source } from 'react-map-gl/maplibre';
 
 import type { Tenure } from '@ow-demo/ow-ui';
-import { AppDrawer, TitlesList } from '@ow-demo/ow-ui';
+import { AppDrawer, LayersList, TitlesList } from '@ow-demo/ow-ui';
 
 import { useOsLayers } from '../hooks';
 import { TitleInfo } from '../typeValidation';
 
 import type { FillLayer, MapRef } from 'react-map-gl/dist/esm/exports-maplibre';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import {
-  ExpandLess,
-  ExpandMore,
-  Visibility,
-  VisibilityOff,
-} from '@mui/icons-material';
-import {
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Collapse,
-} from '@mui/material';
 
 type MainProps = {
   titles: TitleInfo[];
@@ -137,22 +124,33 @@ export default function Main({ titles }: MainProps) {
           });
         }}
       >
-        <LayerOverLay
-          layers={[
-            {
-              layerName: 'Buildings',
-              isVisible: isBuildingLayerVisible,
-              isLayerOn: isBuildingLayerOn,
-              onClick: toggleBuildingVisibility,
-            },
-            {
-              layerName: 'OS Areas',
-              isVisible: isNamedAreaLayerVisible,
-              isLayerOn: isNamedAreaLayerOn,
-              onClick: toggleNamedAreaVisibility,
-            },
-          ]}
-        />
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '0',
+            right: '0',
+            width: '100%',
+            maxWidth: 360,
+            bgcolor: 'background.paper',
+          }}
+        >
+          <LayersList
+            layers={[
+              {
+                layerName: 'Buildings',
+                isVisible: isBuildingLayerVisible,
+                isLayerOn: isBuildingLayerOn,
+                onClick: toggleBuildingVisibility,
+              },
+              {
+                layerName: 'OS Areas',
+                isVisible: isNamedAreaLayerVisible,
+                isLayerOn: isNamedAreaLayerOn,
+                onClick: toggleNamedAreaVisibility,
+              },
+            ]}
+          />
+        </Box>
 
         {namedArea && (
           <Source id="namedArea" type="geojson" data={namedArea}>
@@ -194,61 +192,3 @@ export default function Main({ titles }: MainProps) {
     </AppDrawer>
   );
 }
-
-type LayerOverlayProps = {
-  layers: {
-    isVisible: boolean;
-    isLayerOn: boolean;
-    layerName: string;
-    onClick: () => void;
-  }[];
-};
-
-const LayerOverLay = ({ layers }: LayerOverlayProps) => {
-  const [open, setOpen] = React.useState(true);
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
-  return (
-    <List
-      sx={{
-        position: 'absolute',
-        top: '0',
-        right: '0',
-        width: '100%',
-        maxWidth: 360,
-        bgcolor: 'background.paper',
-      }}
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-    >
-      <ListItemButton onClick={handleClick}>
-        <ListItemIcon>
-          <InboxIcon />
-        </ListItemIcon>
-        <ListItemText primary="All layers" />
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          {layers.map((l, index) => {
-            return (
-              <ListItemButton
-                onClick={l.onClick}
-                disabled={!l.isVisible}
-                sx={{ pl: 4 }}
-                key={index}
-              >
-                <ListItemIcon>
-                  {l.isLayerOn ? <Visibility /> : <VisibilityOff />}
-                </ListItemIcon>
-                <ListItemText primary={l.layerName} />
-              </ListItemButton>
-            );
-          })}
-        </List>
-      </Collapse>
-    </List>
-  );
-};

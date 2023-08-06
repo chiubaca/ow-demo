@@ -1,3 +1,5 @@
+export * from './components/LayersList';
+
 export * from './components/TitleTypeBadge';
 
 export * from './compositions/AppDrawer';
