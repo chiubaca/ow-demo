@@ -41,14 +41,23 @@ const buildingLayerStyle: FillLayer = {
   },
 };
 
-const namedAreaLayerStyle: FillLayer = {
+// const namedAreaLayerStyle: FillLayer = {
+//   id: 'namedArea',
+//   source: 'geojson',
+//   type: 'fill',
+//   paint: {
+//     'fill-color': '#828282a7',
+//     'fill-outline-color': '#c71d1d',
+//     'fill-opacity': 0.25,
+//   },
+// };
+
+const railLayerStyle: FillLayer = {
   id: 'namedArea',
   source: 'geojson',
   type: 'fill',
   paint: {
     'fill-color': '#828282a7',
-    'fill-outline-color': '#c71d1d',
-    'fill-opacity': 0.25,
   },
 };
 
@@ -65,13 +74,25 @@ export const useRegisteredLayers = (mapState: MapState): RegisteredLayers => {
     getNgsDataFn: getNgsData,
   });
 
+  // const {
+  //   features: namedAreaFeatures,
+  //   isLayerVisible: isNamedAreaLayerVisible,
+  //   isLayerOn: isNamedAreaLayerOn,
+  //   toggleLayer: toggleNamedAreaVisibility,
+  // } = useOsLayers({
+  //   ngsFeatureId: 'gnm-fts-namedarea-1',
+  //   mapState,
+  //   minZoomLevelToShow: 12,
+  //   getNgsDataFn: getNgsData,
+  // });
+
   const {
-    features: namedAreaFeatures,
-    isLayerVisible: isNamedAreaLayerVisible,
-    isLayerOn: isNamedAreaLayerOn,
-    toggleLayer: toggleNamedAreaVisibility,
+    features: railFeatures,
+    isLayerVisible: isRailLayerVisible,
+    isLayerOn: isRailLayerOn,
+    toggleLayer: toggleRailLayerVisibility,
   } = useOsLayers({
-    ngsFeatureId: 'gnm-fts-namedarea-1',
+    ngsFeatureId: 'trn-fts-rail-1',
     mapState,
     minZoomLevelToShow: 12,
     getNgsDataFn: getNgsData,
@@ -88,13 +109,22 @@ export const useRegisteredLayers = (mapState: MapState): RegisteredLayers => {
       onClick: toggleBuildingVisibility,
     },
     {
-      id: 'namedArea',
-      layerName: 'OS Named Areas',
-      isLayerOn: isNamedAreaLayerOn,
-      isLayerVisible: isNamedAreaLayerVisible,
-      mapFeatures: namedAreaFeatures,
-      layerStyle: namedAreaLayerStyle,
-      onClick: toggleNamedAreaVisibility,
+      id: 'rail',
+      layerName: 'Railway & Tramlines',
+      isLayerOn: isRailLayerOn,
+      isLayerVisible: isRailLayerVisible,
+      mapFeatures: railFeatures,
+      layerStyle: railLayerStyle,
+      onClick: toggleRailLayerVisibility,
     },
+    // {
+    //   id: 'namedArea',
+    //   layerName: 'OS Named Areas',
+    //   isLayerOn: isNamedAreaLayerOn,
+    //   isLayerVisible: isNamedAreaLayerVisible,
+    //   mapFeatures: namedAreaFeatures,
+    //   layerStyle: namedAreaLayerStyle,
+    //   onClick: toggleNamedAreaVisibility,
+    // },
   ];
 };
