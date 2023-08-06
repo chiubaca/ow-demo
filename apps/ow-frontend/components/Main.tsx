@@ -107,8 +107,6 @@ export default function Main({ titles }: MainProps) {
             propertyAddress: t['Property Address'],
             tenure: t.Tenure.toLowerCase() as Tenure,
             onClick: () => {
-              console.log('click!!');
-
               setSelectedTitle(t);
               mapRef.current.flyTo({
                 zoom: 19,
