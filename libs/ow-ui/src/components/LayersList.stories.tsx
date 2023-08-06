@@ -12,8 +12,8 @@ const Template: StoryFn<typeof LayerListComponent> = (args) => (
   <LayerListComponent {...args} />
 );
 
-export const TitleTypeBadge = Template.bind({});
-TitleTypeBadge.args = {
+export const LayerList = Template.bind({});
+LayerList.args = {
   layers: ['Test layer', 'Test layer 2', 'And another layer'].map(
     (layerName) => ({
       isVisible: true,
