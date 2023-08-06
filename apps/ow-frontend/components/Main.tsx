@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Layer, Map, Marker, Popup, Source } from 'react-map-gl/maplibre';
@@ -15,6 +15,8 @@ type MainProps = {
   titles: TitleInfo[];
 };
 
+type HoverInfo = (null | string)[];
+
 export default function Main({ titles }: MainProps) {
   const mapRef = useRef<MapRef>(null!);
 
@@ -23,6 +25,21 @@ export default function Main({ titles }: MainProps) {
   const [mapState, setMapState] = useState<MapState | null>();
 
   const layers = useRegisteredLayers(mapState);
+
+  const [hoverInfo, setHoverInfo] = useState<null | HoverInfo>(null);
+
+  const onHover = useCallback((event) => {
+    const { features } = event;
+    const hoveredFeature = features && features[0];
+
+    const toid = hoveredFeature?.properties?.toid;
+    const description = hoveredFeature?.properties?.description;
+    const capturespecification =
+      hoveredFeature?.properties?.capturespecification;
+    const oslandusetiera = hoveredFeature?.properties?.oslandusetiera;
+
+    setHoverInfo([toid, description, capturespecification, oslandusetiera]);
+  }, []);
 
   return (
     <AppDrawer
@@ -51,11 +68,11 @@ export default function Main({ titles }: MainProps) {
           latitude: 51.5,
           zoom: 10,
         }}
+        interactiveLayerIds={['buildings', 'rail']}
+        onMouseMove={onHover}
         style={{ width: '100%', height: '94vh' }}
         mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${process.env.NEXT_PUBLIC_MAP_TILER_KEY}`}
         onMoveEnd={(e) => {
-          console.log();
-
           const { _ne, _sw } = mapRef.current.getBounds();
           const zoomLevel = mapRef.current.getZoom();
           setMapState({
@@ -82,6 +99,22 @@ export default function Main({ titles }: MainProps) {
               onClick: l.onClick,
             }))}
           />
+        </Box>
+
+        <Box
+          sx={{
+            position: 'absolute',
+            bottom: '0',
+            left: '0',
+            maxWidth: 360,
+            bgcolor: 'background.paper',
+            opacity: 0.8,
+          }}
+        >
+          {hoverInfo &&
+            hoverInfo.map((info, idx) => (
+              <Typography key={idx}>{info}</Typography>
+            ))}
         </Box>
 
         {layers.map(

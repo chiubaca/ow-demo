@@ -53,7 +53,7 @@ const buildingLayerStyle: FillLayer = {
 // };
 
 const railLayerStyle: FillLayer = {
-  id: 'namedArea',
+  id: 'rail',
   source: 'geojson',
   type: 'fill',
   paint: {
