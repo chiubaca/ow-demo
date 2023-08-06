@@ -41,16 +41,15 @@ const buildingLayerStyle: FillLayer = {
   },
 };
 
-// const namedAreaLayerStyle: FillLayer = {
-//   id: 'namedArea',
-//   source: 'geojson',
-//   type: 'fill',
-//   paint: {
-//     'fill-color': '#828282a7',
-//     'fill-outline-color': '#c71d1d',
-//     'fill-opacity': 0.25,
-//   },
-// };
+const landFeaturesLayerStyle: FillLayer = {
+  id: 'landFeatures',
+  source: 'geojson',
+  type: 'fill',
+  paint: {
+    'fill-color': 'green',
+    'fill-opacity': 0.25,
+  },
+};
 
 const railLayerStyle: FillLayer = {
   id: 'rail',
@@ -74,17 +73,17 @@ export const useRegisteredLayers = (mapState: MapState): RegisteredLayers => {
     getNgsDataFn: getNgsData,
   });
 
-  // const {
-  //   features: namedAreaFeatures,
-  //   isLayerVisible: isNamedAreaLayerVisible,
-  //   isLayerOn: isNamedAreaLayerOn,
-  //   toggleLayer: toggleNamedAreaVisibility,
-  // } = useOsLayers({
-  //   ngsFeatureId: 'gnm-fts-namedarea-1',
-  //   mapState,
-  //   minZoomLevelToShow: 12,
-  //   getNgsDataFn: getNgsData,
-  // });
+  const {
+    features: landFeatures,
+    isLayerVisible: isLandFeaturesLayerVisible,
+    isLayerOn: isLandFeaturesLayerOn,
+    toggleLayer: toggleLandFeaturesVisibility,
+  } = useOsLayers({
+    ngsFeatureId: 'lnd-fts-land-1',
+    mapState,
+    minZoomLevelToShow: 12,
+    getNgsDataFn: getNgsData,
+  });
 
   const {
     features: railFeatures,
@@ -117,14 +116,14 @@ export const useRegisteredLayers = (mapState: MapState): RegisteredLayers => {
       layerStyle: railLayerStyle,
       onClick: toggleRailLayerVisibility,
     },
-    // {
-    //   id: 'namedArea',
-    //   layerName: 'OS Named Areas',
-    //   isLayerOn: isNamedAreaLayerOn,
-    //   isLayerVisible: isNamedAreaLayerVisible,
-    //   mapFeatures: namedAreaFeatures,
-    //   layerStyle: namedAreaLayerStyle,
-    //   onClick: toggleNamedAreaVisibility,
-    // },
+    {
+      id: 'landFeatures',
+      layerName: 'Land Features',
+      isLayerOn: isLandFeaturesLayerOn,
+      isLayerVisible: isLandFeaturesLayerVisible,
+      mapFeatures: landFeatures,
+      layerStyle: landFeaturesLayerStyle,
+      onClick: toggleLandFeaturesVisibility,
+    },
   ];
 };

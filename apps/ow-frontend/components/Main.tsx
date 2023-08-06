@@ -68,9 +68,9 @@ export default function Main({ titles }: MainProps) {
           latitude: 51.5,
           zoom: 10,
         }}
-        interactiveLayerIds={['buildings', 'rail']}
+        interactiveLayerIds={['buildings', 'rail', 'landFeatures']}
         onMouseMove={onHover}
-        style={{ width: '100%', height: '94vh' }}
+        style={{ width: '100%', height: '90vh' }}
         mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${process.env.NEXT_PUBLIC_MAP_TILER_KEY}`}
         onMoveEnd={(e) => {
           const { _ne, _sw } = mapRef.current.getBounds();
