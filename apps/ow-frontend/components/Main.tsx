@@ -1,56 +1,18 @@
 import React, { useState, useRef } from 'react';
-import { ngd } from 'osdatahub';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import { Layer, Map, Marker, Popup, Source } from 'react-map-gl/maplibre';
 
 import type { Tenure } from '@ow-demo/ow-ui';
 import { AppDrawer, LayersList, TitlesList } from '@ow-demo/ow-ui';
 
-import { useOsLayers } from '../hooks';
+import { useRegisteredLayers } from '../hooks';
 import { TitleInfo } from '../typeValidation';
 
-import type { FillLayer, MapRef } from 'react-map-gl/dist/esm/exports-maplibre';
+import type { MapRef } from 'react-map-gl/dist/esm/exports-maplibre';
 
 type MainProps = {
   titles: TitleInfo[];
-};
-
-const getNgsData = async (featureId: NGSFeatureIds, bbox: Bbox) => {
-  try {
-    const features = await ngd.features(
-      process.env.NEXT_PUBLIC_OS_API_KEY,
-      featureId,
-      {
-        bbox,
-        limit: 100,
-      }
-    );
-    return features;
-  } catch (error) {
-    console.warn('Error getting data from OS API', error);
-  }
-};
-
-const buildingLayerStyle: FillLayer = {
-  id: 'buildings',
-  source: 'geojson',
-  type: 'fill',
-  paint: {
-    'fill-color': '#ef920688',
-    'fill-outline-color': '#09151586',
-  },
-};
-
-const namedAreaLayerStyle: FillLayer = {
-  id: 'namedArea',
-  source: 'geojson',
-  type: 'fill',
-  paint: {
-    'fill-color': '#828282a7',
-    'fill-outline-color': '#c71d1d',
-    'fill-opacity': 0.25,
-  },
 };
 
 export default function Main({ titles }: MainProps) {
@@ -60,29 +22,7 @@ export default function Main({ titles }: MainProps) {
 
   const [mapState, setMapState] = useState<MapState | null>();
 
-  const {
-    features: buildings,
-    isLayerVisible: isBuildingLayerVisible,
-    isLayerOn: isBuildingLayerOn,
-    toggleLayer: toggleBuildingVisibility,
-  } = useOsLayers({
-    ngsFeatureId: 'bld-fts-buildingpart-1',
-    mapState,
-    minZoomLevelToShow: 17,
-    getNgsDataFn: getNgsData,
-  });
-
-  const {
-    features: namedArea,
-    isLayerVisible: isNamedAreaLayerVisible,
-    isLayerOn: isNamedAreaLayerOn,
-    toggleLayer: toggleNamedAreaVisibility,
-  } = useOsLayers({
-    ngsFeatureId: 'gnm-fts-namedarea-1',
-    mapState,
-    minZoomLevelToShow: 12,
-    getNgsDataFn: getNgsData,
-  });
+  const layers = useRegisteredLayers(mapState);
 
   return (
     <AppDrawer
@@ -135,33 +75,22 @@ export default function Main({ titles }: MainProps) {
           }}
         >
           <LayersList
-            layers={[
-              {
-                layerName: 'Buildings',
-                isVisible: isBuildingLayerVisible,
-                isLayerOn: isBuildingLayerOn,
-                onClick: toggleBuildingVisibility,
-              },
-              {
-                layerName: 'OS Areas',
-                isVisible: isNamedAreaLayerVisible,
-                isLayerOn: isNamedAreaLayerOn,
-                onClick: toggleNamedAreaVisibility,
-              },
-            ]}
+            layers={layers.map((l) => ({
+              layerName: l.layerName,
+              isVisible: l.isLayerVisible,
+              isLayerOn: l.isLayerOn,
+              onClick: l.onClick,
+            }))}
           />
         </Box>
 
-        {namedArea && (
-          <Source id="namedArea" type="geojson" data={namedArea}>
-            <Layer {...namedAreaLayerStyle} />
-          </Source>
-        )}
-
-        {buildings && (
-          <Source id="buildings" type="geojson" data={buildings}>
-            <Layer {...buildingLayerStyle} />
-          </Source>
+        {layers.map(
+          (l) =>
+            l.mapFeatures && (
+              <Source key={l.id} id={l.id} type="geojson" data={l.mapFeatures}>
+                <Layer {...l.layerStyle} />
+              </Source>
+            )
         )}
 
         {selectedTitle && (
